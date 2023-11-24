@@ -12,3 +12,6 @@
 11월 24, 2023 10:21:38.996 [16644:5376:1124/102138.992:ERROR:CONSOLE(1)] "Extension server error: Inspector protocol error: uniqueContextId not found", source: devtools://devtools/bundled/devtools-frontend/front_end/models/extensions/extensions.js (1)
 11월 24, 2023 10:21:38.999 [16644:5376:1124/102138.998:ERROR:CONSOLE(1)] "Received error with code E_PROTOCOLERROR while checking if react has loaded: "Inspector protocol error: %s"", source: chrome-extension://fmkadmapgofadopljbjfkapdkoienihi/build/main.js (1)
 11월 24, 2023 11:04:50.745 [16644:5376:1124/110450.745:ERROR:interface_endpoint_client.cc(702)] Message 5 rejected by interface blink.mojom.WidgetHost
+
+11월 24, 2023 15:54:13.115 NEW SESSION
+11월 24, 2023 15:54:13.115 [4400:16872:1124/155413.113:ERROR:interface_endpoint_client.cc(702)] Message 1 rejected by interface blink.mojom.WidgetHost
