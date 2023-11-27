@@ -23,5 +23,5 @@ public class Member {
 	}
 	public void setUname(String uname) {
 		this.uname = uname;
-	}
+	} 
 }
