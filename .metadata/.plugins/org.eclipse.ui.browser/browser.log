@@ -21,3 +21,6 @@
 11월 24, 2023 17:55:08.75 [12576:12704:1124/175508.075:ERROR:CONSOLE(1)] "Extension server error: Operation failed: http://localhost:8080/jwbook/validation/joinProcess.jsp has no execution context", source: devtools://devtools/bundled/devtools-frontend/front_end/models/extensions/extensions.js (1)
 11월 24, 2023 18:08:29.30 [12576:12704:1124/180829.030:ERROR:CONSOLE(1)] "Extension server error: Operation failed: http://localhost:8080/jwbook/validation/joinProcess.jsp has no execution context", source: devtools://devtools/bundled/devtools-frontend/front_end/models/extensions/extensions.js (1)
 11월 24, 2023 18:08:55.591 [12576:12704:1124/180855.590:ERROR:CONSOLE(1)] "Extension server error: Operation failed: http://localhost:8080/jwbook/validation/joinProcess.jsp has no execution context", source: devtools://devtools/bundled/devtools-frontend/front_end/models/extensions/extensions.js (1)
+
+11월 28, 2023 10:23:41.470 NEW SESSION
+11월 28, 2023 10:23:41.470 [16680:16676:1128/102341.468:ERROR:interface_endpoint_client.cc(702)] Message 1 rejected by interface blink.mojom.WidgetHost
