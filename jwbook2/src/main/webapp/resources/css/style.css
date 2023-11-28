@@ -1,5 +1,16 @@
 @charset "UTF-8";
 /* 공통 */
-section{width: 80%; margin: 30px auto; text-align: center;}
-h3{color: red;}
-/* index 페이지 */
+#content{
+	width: 80%; 
+	margin: 30px auto; 
+	text-align: center;
+}
+ul li{list-style: none; margin: 10px;}
+
+/* 학생 목록 스타일 */
+table, th, td{
+	margin: 0 auto; 
+	border: 1px solid #ccc; 
+	padding: 10px; 
+	border-collapse: collapse; 
+}
