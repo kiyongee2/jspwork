@@ -39,8 +39,8 @@ public class StudentController extends HttpServlet {
 		//subString(1, 5) : 1번 4번까지 추출함
 		//subString(0): 0번 인덱스부터 문자열의 끝까지 추출함
 		String uri = request.getRequestURI();
-		String command = uri.substring(uri.lastIndexOf("/"));
 		System.out.println(uri);
+		String command = uri.substring(uri.lastIndexOf("/"));
 		System.out.println(uri.lastIndexOf("/"));
 		System.out.println(command);
 		
