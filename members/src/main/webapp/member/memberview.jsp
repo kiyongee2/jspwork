@@ -43,12 +43,14 @@
 				</tr>
 				<tr>
 					<td colspan="2">
+					<c:if test="${sessionId eq member.id}">
 						<a href=""> 
 							<button>수정</button>
 						</a>
 						<a href=""> 
 							<button>탈퇴</button>
 						</a>
+					</c:if>
 						<a href="/memberlist.do"> 
 							<button>목록</button>
 						</a>

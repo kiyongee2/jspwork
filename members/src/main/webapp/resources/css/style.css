@@ -52,12 +52,13 @@ form input{padding: 5px;}
 #memberview table, th, td{border: 1px solid #ccc; 
   border-collapse: collapse; text-align: center;}
 table th, td{padding: 10px;}
+#memberview button{padding: 5px;}
 
 /* login 스타일 */
 #login {width: 400px; margin: 30px auto 100px;}
 #login form{margin: 30px auto;}
 #login form ul li{margin: 30px;}
-#login .error{color: #b00; margin-top: 16px; font-size: 0.9em}
+#login .error{color: #e00; margin-top: 16px; font-size: 0.9em}
 #login button{width: 100%; padding: 10px 0;}
 
 
