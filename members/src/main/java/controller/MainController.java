@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import board.Board;
+import board.BoardDAO;
 import member.Member;
 import member.MemberDAO;
 
@@ -19,10 +21,13 @@ import member.MemberDAO;
 public class MainController extends HttpServlet {
 	
 	private static final long serialVersionUID = 10L;
+	//필드
 	MemberDAO mDAO;
+	BoardDAO bDAO;
 	
     public MainController() { //생성자
         mDAO = new MemberDAO();
+        bDAO = new BoardDAO();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -116,11 +121,39 @@ public class MainController extends HttpServlet {
 			nextPage = "/index.jsp";
 		}
 		
-	
-		RequestDispatcher dispatch = 
-				request.getRequestDispatcher(nextPage);
-		dispatch.forward(request, response);
+		//게시판
+		if(command.equals("/boardlist.do")) {
+			//db에서 list를 가져옴
+			List<Board> boardList = bDAO.getBoardList();
+			//모델로 생성
+			request.setAttribute("boardList", boardList);
+			
+			nextPage = "/board/boardlist.jsp";
+		}else if(command.equals("/writeform.do")) {
+			nextPage = "/board/writeform.jsp";
+		}else if(command.equals("/write.do")) {
+			//폼 데이터 받기
+			String title = request.getParameter("title");
+			String content = request.getParameter("content");
+			//세션 가져오기
+			String id = (String)session.getAttribute("sessionId");
+			
+			//db에 저장
+			Board b = new Board();
+			b.setTitle(title);
+			b.setContent(content);
+			b.setId(id);
+			//write 메서드 실행
+			bDAO.write(b);
+		}
 		
+		if(command.equals("/write.do")) {
+			//새로고침하면 게시글 중복 생성 문제 해결
+			response.sendRedirect("/boardlist.do");
+		}else {
+			RequestDispatcher dispatch = 
+					request.getRequestDispatcher(nextPage);
+			dispatch.forward(request, response);
+		}
 	}
-
 }
