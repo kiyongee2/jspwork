@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import member.Member;
 import member.MemberDAO;
@@ -30,6 +32,8 @@ public class MainController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//한글 인코딩
 		request.setCharacterEncoding("utf-8");
+		//응답할 컨텐츠 유형
+		response.setContentType("text/html; charset=utf-8");
 		
 		//경로 설정
 		//uri - 컨텍스트(/) + 파일(.do)
@@ -38,8 +42,13 @@ public class MainController extends HttpServlet {
 		//command 패턴
 		String command = uri.substring(uri.lastIndexOf("/"));
 		System.out.println(command);
-		
+		//이동 페이지
 		String nextPage = "";
+		//세션 객체 생성
+		HttpSession session = request.getSession();
+		
+		//view에 출력 객체 생성
+		PrintWriter out = response.getWriter();
 		
 		if(command.equals("/memberlist.do")) {
 			//회원정보를 db에서 가져옴
@@ -71,12 +80,47 @@ public class MainController extends HttpServlet {
 			//회원 가입후 이동
 			nextPage = "/index.jsp";
 		}else if(command.equals("/memberview.do")) {
+		   String id = request.getParameter("id");
+			
+			Member member = mDAO.getMember(id);
+			
+			//모델 생성
+			request.setAttribute("member", member);
+			
 			nextPage = "/member/memberview.jsp";
+		}else if(command.equals("/loginform.do")) { //로그인 폼페이지 이동
+			nextPage = "/member/loginform.jsp";
+		}else if(command.equals("/login.do")) { //로그인 처리
+			//아이디와 비번 파라미터 받기
+			String id = request.getParameter("id");
+			String passwd = request.getParameter("passwd");
+			//빈 객체를 생성해서 아이디와 비번 세팅해줌
+			Member m = new Member();
+			m.setId(id);
+			m.setPasswd(passwd);
+			//로그인 인증
+			boolean result = mDAO.checkLogin(m);
+			if(result) { //result가 true이면 세션 발급
+				session.setAttribute("sessionId", id);
+				//로그인 후 페이지 이동
+				nextPage = "/index.jsp";
+			}else {
+				//에러를 모델로 보내기
+				String error = "아이디나 비밀번호를 다시 확인해주세요.";
+				request.setAttribute("error", error);
+				//에러 발생후 페이지 이동
+				nextPage ="/member/loginform.jsp";
+			}	
+		}else if(command.equals("/logout.do")) {
+			session.invalidate(); //모든 세션 삭제
+			nextPage = "/index.jsp";
 		}
 		
+	
 		RequestDispatcher dispatch = 
 				request.getRequestDispatcher(nextPage);
 		dispatch.forward(request, response);
+		
 	}
 
 }

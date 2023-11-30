@@ -18,7 +18,41 @@
 			<tbody>
 				<tr>
 					<td><label for="id">아이디</label></td>
-					<td></td>
+					<td>${member.id}</td>
+				</tr>
+				<tr>
+					<td><label for="passwd">비밀번호</label></td>
+					<td>${member.passwd}</td>
+				</tr>
+				<tr>
+					<td><label for="name">이름</label></td>
+					<td>${member.name}</td>
+				</tr>
+				<tr>
+					<td><label for="email">이메일</label></td>
+					<td>${member.email}</td>
+				</tr>
+				<tr>
+					<td><label for="gender">성별</label></td>
+					<td>${member.gender}</td>
+				</tr>
+				<tr>
+					<td><label for="joindate">가입일</label></td>
+					<td><fmt:formatDate value="${member.joinDate}" 
+		                    pattern="yyyy-MM-dd HH:mm:ss" /></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<a href=""> 
+							<button>수정</button>
+						</a>
+						<a href=""> 
+							<button>탈퇴</button>
+						</a>
+						<a href="/memberlist.do"> 
+							<button>목록</button>
+						</a>
+					</td>
 				</tr>
 			</tbody>
 		</table>
