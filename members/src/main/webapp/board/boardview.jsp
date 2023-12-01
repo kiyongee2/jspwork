@@ -44,19 +44,39 @@
 		</table>
 		
 		<!-- 댓글 영역 -->
-		<h3>댓글</h3>
-		<div>
-			<p>댓글 내용</p>
-			<p>작성자(작성일: )
+		<h3><i class="fa-regular fa-pen-to-square"></i> 댓글</h3>
+		<c:forEach items="${replyList}" var="reply">
+		<div class="reply">
+			<p>${reply.rcontent}</p>
+			<p>작성자: ${reply.replyer}(작성일: ${reply.rdate})
+			<p>
+				<c:if test="${sessionId eq reply.replyer}">
+				<a href="/updateReplyform.do?bno=${board.bno}&rno=${reply.rno}">수정</a>
+				| <a href="/deletereply.do?bno=${board.bno}&rno=${reply.rno}"
+				   onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
+				</c:if>
+			</p>
 		</div>
+		</c:forEach>
+		
 		<!-- 댓글 등록 -->
 		<form action="/insertreply.do" method="post" id="replyform">
+			<input type="hidden" name="bno" value="${board.bno}">
+			<input type="hidden" name="replyer" value="${sessionId}">
 			<p>
 				<textarea rows="4" cols="50" name="rcontent"
 						placeholder="댓글을 남겨보세요"></textarea>
 			</p>
 		    <button type="submit">등록</button>
 		</form>
+		<!-- 로그인한 사용자만 댓글 등록 가능 -->
+		<c:if test="${empty sessionId}">
+		<div class="replylogin">
+			<a href="/loginform.do">
+				<i class="fa-solid fa-user"></i> 로그인한 사용자만 댓글 등록이 가능합니다.
+			</a>
+		</div>
+		</c:if>
 	  </section>
 	</div>
 	<jsp:include page="../footer.jsp" />

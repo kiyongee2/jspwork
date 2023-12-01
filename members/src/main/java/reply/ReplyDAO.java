@@ -20,11 +20,23 @@ public class ReplyDAO {
 		List<Reply> replyList = new ArrayList<>();
 		try {
 			conn = JDBCUtil.getConnection();
-			String sql = "SELECT * FROM reply WHERE bno = ?";
+			String sql = "SELECT * FROM reply WHERE bno = ? "
+					+ "ORDER BY rdate";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, bno);
 			//sql 처리
-			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Reply r = new Reply();
+				r.setRno(rs.getInt("rno"));
+				r.setBno(rs.getInt("bno"));
+				r.setRcontent(rs.getString("rcontent"));
+				r.setReplyer(rs.getString("replyer"));
+				r.setRdate(rs.getTimestamp("rdate"));
+				r.setRupdate(rs.getTimestamp("rupdate"));
+				
+				replyList.add(r);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -32,4 +44,48 @@ public class ReplyDAO {
 		}
 		return replyList;
 	}
-}
+	
+	//댓글 등록
+	public void insertreply(Reply r) {
+		try {
+			conn = JDBCUtil.getConnection();
+			String sql = "INSERT INTO reply(rno, bno, rcontent, replyer) "
+					+ "VALUES (seq_rno.NEXTVAL, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, r.getBno());
+			pstmt.setString(2, r.getRcontent());
+			pstmt.setString(3, r.getReplyer());
+			//sql 처리
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt);
+		}
+	}
+	
+	//댓글 삭제 - 댓글 번호로 검색
+	public void deletereply(int rno) {
+		try {
+			conn = JDBCUtil.getConnection();
+			String sql = "DELETE FROM reply WHERE rno = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, rno);
+			//sql 처리
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt);
+		}
+	}
+	
+	
+	
+}//replyDAO 닫기
+
+
+
+
+
+
