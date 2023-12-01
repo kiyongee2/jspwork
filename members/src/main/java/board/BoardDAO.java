@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +87,12 @@ public class BoardDAO {
 				b.setHit(rs.getInt("hit"));
 				b.setFilename(rs.getString("filename"));
 				b.setId(rs.getString("id"));
+				
+				//조회수 1증가
+				sql = "UPDATE board SET hit = hit + 1 WHERE bno = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, bno);
+				pstmt.executeUpdate();  //실행
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -104,6 +111,30 @@ public class BoardDAO {
 			String sql = "DELETE FROM board WHERE bno = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, bno);
+			//sql 실행
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt);
+		}
+	}
+	
+	//게시글 수정 : 가입과 비슷하나 수정해서 가입시키다고 이해하면 좋음
+	public void updateboard(Board b) {
+		//현재 날짜와 시간 객체 생성
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		try {
+			//db 연결
+			conn = JDBCUtil.getConnection();
+			//sql 처리 : 수정일 처리는 현재 날짜와 시간을 입력함
+			String sql = "UPDATE board SET title = ?, content = ?, modifydate = ? "
+					+ "WHERE bno = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, b.getTitle());
+			pstmt.setString(2, b.getContent());
+			pstmt.setTimestamp(3, now);
+			pstmt.setInt(4, b.getBno());
 			//sql 실행
 			pstmt.executeUpdate();
 		}catch(Exception e) {

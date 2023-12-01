@@ -29,8 +29,19 @@
 					<tr>
 						<td>${b.bno}</td>
 						<td><a href="/boardview.do?bno=${b.bno}">${b.title}</a></td>
-						<td><fmt:formatDate value="${b.createDate}" 
-									pattern="yyyy-MM-dd HH:mm:ss" />  </td>
+						<!-- 수정일이 있을 경우 수정 날짜값이 표시되도록함 -->
+						<td>
+						<c:choose>
+							<c:when test="${not empty b.modifyDate}">
+							   <fmt:formatDate value="${b.modifyDate}" 
+									pattern="yyyy-MM-dd HH:mm:ss" />
+							</c:when>
+						    <c:otherwise>
+						        <fmt:formatDate value="${b.createDate}" 
+									pattern="yyyy-MM-dd HH:mm:ss" />
+						    </c:otherwise>
+						</c:choose>
+						</td>		
 						<td>${b.hit}</td>
 						<td>${b.id}</td>
 					</tr>

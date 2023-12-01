@@ -150,6 +150,10 @@ public class MainController extends HttpServlet {
 			int bno =  Integer.parseInt(request.getParameter("bno"));
 			//글 상세보기 처리
 			Board board = bDAO.getBoard(bno);
+			
+			//댓글 목록 보기
+			
+			
 			//모델 생성해서 뷰로 보내기
 			request.setAttribute("board", board);
 			
@@ -160,11 +164,35 @@ public class MainController extends HttpServlet {
 			bDAO.deleteboard(bno);
 			
 			nextPage ="/boardlist.do";
+		}else if(command.equals("/updateBoardform.do")) {
+			//수정을 위해서 게시글 가져오기
+			int bno =  Integer.parseInt(request.getParameter("bno"));
+			//게시글 1건 가져오기
+			Board board = bDAO.getBoard(bno);
+			//모델 생성
+			request.setAttribute("board", board);
+			
+			nextPage = "/board/updateBoardform.jsp";
+		}else if(command.equals("/updateboard.do")) {
+			//게시글 제목, 내용을 파라미터로 받음
+			int bno =  Integer.parseInt(request.getParameter("bno"));
+			String title = request.getParameter("title");
+			String content = request.getParameter("content");
+			
+			//수정 처리 메서드
+			Board b = new Board();
+			b.setTitle(title);
+			b.setContent(content);
+			b.setBno(bno);
+			
+			bDAO.updateboard(b);
+			
+			//nextPage = "/boardlist.do";
 		}
 		
 		
 		//redirect와 forword 구분하기
-		if(command.equals("/write.do")) {
+		if(command.equals("/write.do") || command.equals("/updateboard.do")) {
 			//새로고침하면 게시글 중복 생성 문제 해결
 			response.sendRedirect("/boardlist.do");
 		}else {

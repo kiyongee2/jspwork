@@ -12,17 +12,17 @@
 <body>
 	<jsp:include page="../header.jsp" />
     <div id="container">
-      <section id="writeform">
+      <section id="board_view">
 		<h2>글 상세보기</h2>
 		<table>
 			<tbody>
 				<tr>
 					<td><input type="text" name="title" 
-							value="${board.title}"></td>
+							value="${board.title}" readonly></td>
 				</tr>
 			    <tr>
 			    	<td><textarea rows="7" cols="100" 
-			    			name="content">${board.content}</textarea></td>
+			    			name="content" readonly>${board.content}</textarea></td>
 			    </tr>
 			    <tr>
 			    	<td>
@@ -42,6 +42,21 @@
 			    </tr>
 			</tbody>
 		</table>
+		
+		<!-- 댓글 영역 -->
+		<h3>댓글</h3>
+		<div>
+			<p>댓글 내용</p>
+			<p>작성자(작성일: )
+		</div>
+		<!-- 댓글 등록 -->
+		<form action="/insertreply.do" method="post" id="replyform">
+			<p>
+				<textarea rows="4" cols="50" name="rcontent"
+						placeholder="댓글을 남겨보세요"></textarea>
+			</p>
+		    <button type="submit">등록</button>
+		</form>
 	  </section>
 	</div>
 	<jsp:include page="../footer.jsp" />

@@ -82,3 +82,16 @@ table thead{background: #eee;}
 #writeform textarea{width: 540px; height: 300px; padding: 5px;}
 #writeform button{padding: 5px;}
 
+/* 글 상세보기 스타일 */
+#board_view{width: 550px; margin: 20px auto;}
+#board_view table{width: 550px; margin: 20px auto;}
+#board_view table, th, td{border: 1px solid #ccc; 
+  border-collapse: collapse; text-align: center;}
+table th, td{padding: 10px;}
+table thead{background: #eee;}
+#board_view input{width: 540px; height: 25px; padding: 5px;}
+#board_view textarea{width: 540px; height: 300px; padding: 5px;}
+#board_view button{padding: 5px;}
+#replyform textarea{height: 100px;}
+
+

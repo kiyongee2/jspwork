@@ -15,6 +15,8 @@
       <section id="writeform">
 		<h2>게시글 수정</h2>
 		<form action="/updateboard.do" method="post">
+		    <!-- 'hidden'은 ui를 만들지 않고 데이터 숨겨서 보낼때 사용 -->
+		    <input type="hidden" name="bno" value="${board.bno}">
 			<table>
 				<tbody>
 					<tr>
@@ -27,17 +29,9 @@
 				    </tr>
 				    <tr>
 				    	<td>
-				    	    <c:if test="${sessionId eq board.id}">
-				    		<a href="/updateBoardform.do?bno=${board.bno}">
-				    			<button type="button">수정</button>
-			    			</a>
-				    		<a href="/deleteboard.do?bno=${board.bno}"
-				    		   onclick="return confirm('정말로 삭제하시겠습니까?')">
-				    			<button type="button">삭제</button>
-			    			</a>
-			    			</c:if>
-				    		<a href="/boardlist.do">
-				    			<button type="button">목록</button>
+			    			<button type="submit">저장</button>
+			    			<a href="/boardlist.do">
+			    				<button type="button">취소</button>
 			    			</a>
 				    	</td>
 				    </tr>
