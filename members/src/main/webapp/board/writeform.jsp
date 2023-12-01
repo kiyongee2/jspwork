@@ -10,6 +10,14 @@
 <link rel="stylesheet" href="resources/css/style.css">
 </head>
 <body>
+	<!-- 로그인한 사용자만 글쓰기 허용됨 -->
+	<c:if test="${empty sessionId}">
+		<script type="text/javascript">
+			alert("로그인이 필요합니다.");
+			location.href = "/loginform.do";
+		</script>
+	
+	</c:if>
 	<jsp:include page="../header.jsp" />
     <div id="container">
       <section id="writeform">

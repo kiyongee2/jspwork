@@ -145,8 +145,25 @@ public class MainController extends HttpServlet {
 			b.setId(id);
 			//write 메서드 실행
 			bDAO.write(b);
+		}else if(command.equals("/boardview.do")) {
+			//글제목에서 요청한 글 번호 받기
+			int bno =  Integer.parseInt(request.getParameter("bno"));
+			//글 상세보기 처리
+			Board board = bDAO.getBoard(bno);
+			//모델 생성해서 뷰로 보내기
+			request.setAttribute("board", board);
+			
+			nextPage = "/board/boardview.jsp";
+		}else if(command.equals("/deleteboard.do")) {
+			int bno =  Integer.parseInt(request.getParameter("bno"));
+			//삭제 처리
+			bDAO.deleteboard(bno);
+			
+			nextPage ="/boardlist.do";
 		}
 		
+		
+		//redirect와 forword 구분하기
 		if(command.equals("/write.do")) {
 			//새로고침하면 게시글 중복 생성 문제 해결
 			response.sendRedirect("/boardlist.do");

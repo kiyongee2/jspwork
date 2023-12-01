@@ -28,7 +28,7 @@
 				<c:forEach items="${boardList}" var="b">
 					<tr>
 						<td>${b.bno}</td>
-						<td>${b.title}</td>
+						<td><a href="/boardview.do?bno=${b.bno}">${b.title}</a></td>
 						<td><fmt:formatDate value="${b.createDate}" 
 									pattern="yyyy-MM-dd HH:mm:ss" />  </td>
 						<td>${b.hit}</td>
