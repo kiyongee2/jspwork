@@ -59,7 +59,21 @@ public class MainController extends HttpServlet {
 		//view에 출력 객체 생성
 		PrintWriter out = response.getWriter();
 		
-		if(command.equals("/memberlist.do")) {
+		if(command.equals("/main.do")) { //http://localhost:8080/
+			//메인 페이지에 게시글 보내기
+			List<Board> boardList = bDAO.getBoardList();
+			request.setAttribute("boardList", boardList);
+			//System.out.println(boardList.size() + "개");
+
+			if(boardList.size() >= 3) {
+				//게시글 3개를 저장할 배열 생성
+				Board[] newBoards = {boardList.get(0), boardList.get(1),
+						boardList.get(2)};
+				
+				request.setAttribute("boardList", newBoards);
+			}
+			nextPage = "/main.jsp";
+		}else if(command.equals("/memberlist.do")) {
 			//회원정보를 db에서 가져옴
 			List<Member> memberList = mDAO.getMemberList();
 			//모델 생성
