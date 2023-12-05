@@ -11,10 +11,8 @@
     <fullyQualifiedTypeName name="java.sql.Connection"/>
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="java.sql.ResultSet"/>
-    <fullyQualifiedTypeName name="member.MemberDAO"/>
     <fullyQualifiedTypeName name="member.Member"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
-    <fullyQualifiedTypeName name="java.io.PrintWriter"/>
     <fullyQualifiedTypeName name="board.BoardDAO"/>
     <fullyQualifiedTypeName name="board.Board"/>
     <fullyQualifiedTypeName name="java.io.Serializable"/>
@@ -24,4 +22,6 @@
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="reply.ReplyDAO"/>
     <fullyQualifiedTypeName name="reply.Reply"/>
+    <fullyQualifiedTypeName name="java.io.PrintWriter"/>
+    <fullyQualifiedTypeName name="member.MemberDAO"/>
 </qualifiedTypeNameHistroy>

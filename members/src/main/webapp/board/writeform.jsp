@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>글쓰기 폼</title>
-<link rel="stylesheet" href="resources/css/style.css">
+<link rel="stylesheet" href="../resources/css/style.css">
 </head>
 <body>
 	<!-- 로그인한 사용자만 글쓰기 허용됨 -->

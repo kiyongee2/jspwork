@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>글 상세보기</title>
-<link rel="stylesheet" href="resources/css/style.css">
+<link rel="stylesheet" href="../resources/css/style.css">
 </head>
 <body>
 	<jsp:include page="../header.jsp" />
