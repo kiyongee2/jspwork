@@ -19,12 +19,11 @@ public class BoardDAO {
 	//게시글 목록
 	public List<Board> getBoardList(){
 		List<Board> boardList = new ArrayList<>();
-		
 		try {
 			//db 연결
 			conn = JDBCUtil.getConnection();
 			//sql 처리
-			String sql = "SELECT * FROM board ORDER BY createdate DESC";
+			String sql = "SELECT * FROM board ORDER BY bno DESC";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();  //검색한 데이터셋(모음)
 			while(rs.next()) {
@@ -48,6 +47,63 @@ public class BoardDAO {
 		return boardList;
 	}
 	
+	//게시글 목록(페이지 처리)
+	public List<Board> getBoardList(int page){
+		List<Board> boardList = new ArrayList<>();
+		try {
+			//db 연결
+			conn = JDBCUtil.getConnection();
+			//sql 처리
+			String sql = "SELECT * "
+					+ "FROM (SELECT ROWNUM RN, bo.* "
+					+ "        FROM (SELECT * FROM board ORDER BY bno DESC) bo) "
+					+ "WHERE RN >= ? AND RN <= ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (page-1)*10+1);  //시작행(startRow)
+			pstmt.setInt(2, page*10);  //페이지당 게시글(끝번호)
+			rs = pstmt.executeQuery();  //검색한 데이터셋(모음)
+			while(rs.next()) {
+				Board b = new Board();
+				b.setBno(rs.getInt("bno"));
+				b.setTitle(rs.getString("title"));
+				b.setContent(rs.getString("content"));
+				b.setCreateDate(rs.getTimestamp("createdate"));
+				b.setModifyDate(rs.getTimestamp("modifydate"));
+				b.setHit(rs.getInt("hit"));
+				b.setFilename(rs.getString("filename"));
+				b.setId(rs.getString("id"));
+				
+				boardList.add(b); //list에 b 객체 저장함
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return boardList;
+	}
+	
+	//총 게시글 수
+	public int getBoardCount() {
+		int total = 0;
+		try {
+			//db 연결
+			conn = JDBCUtil.getConnection();
+			//sql 처리
+			String sql = "SELECT COUNT(*) AS total FROM board";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();  //검색한 데이터셋(모음)
+			if(rs.next()) {
+				total = rs.getInt("total");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return total;
+	}
+
 	//글쓰기 처리
 	public void write(Board b) {
 		try {

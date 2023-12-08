@@ -141,10 +141,34 @@ public class MainController extends HttpServlet {
 		
 		//게시판
 		if(command.equals("/boardlist.do")) {
-			//db에서 list를 가져옴
-			List<Board> boardList = bDAO.getBoardList();
+			//페이지 처리
+			String pageNum = request.getParameter("pageNum");
+			if(pageNum == null) { //페이지 번호를 클릭하지 않았을때 기본값
+				pageNum = "1";
+			}
+			
+			//현재 페이지
+			int currentPage = Integer.parseInt(pageNum);
+			//페이지당 게시글 수 - 10(pageSize)
+			int pageSize = 10;
+			//1페이지의 첫번째행(startRow) : 1번, 2페이지 : 11번, 3페이지 : 21
+			int startRow = (currentPage - 1) * pageSize + 1;
+			System.out.println("페이지 첫행: " + startRow);
+			
+			//종료(끝) 페이지 : 전체 게시글총수 / 페이지당 개수
+			int totalRow = bDAO.getBoardCount();
+			int endPage = totalRow / pageSize;
+			//페이지당 개수(10)로 나누어 떨어지지 않는 경우 코딩
+			endPage = (totalRow % pageSize == 0) ? endPage : endPage + 1;
+			//System.out.println("총 게시글 수: " + totalRow);
+			//System.out.println("마지막 페이지: " + endPage);
+			
+			//페이지 처리 목록 메서드 호출
+			List<Board> boardList = bDAO.getBoardList(currentPage);
 			//모델로 생성
 			request.setAttribute("boardList", boardList);
+			request.setAttribute("page", currentPage);
+			request.setAttribute("endPage", endPage);
 			
 			nextPage = "/board/boardlist.jsp";
 		}else if(command.equals("/writeform.do")) {
