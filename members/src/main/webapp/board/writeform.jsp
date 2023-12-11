@@ -22,7 +22,7 @@
     <div id="container">
       <section id="writeform">
 		<h2>글쓰기</h2>
-		<form action="/write.do" method="post">
+		<form action="/write.do" method="post" enctype="multipart/form-data">
 			<table>
 				<tbody>
 					<tr>
@@ -30,9 +30,12 @@
 								placeholder="글제목" required> </td>
 					</tr>
 				    <tr>
-				    	<td><textarea rows="7" cols="100" 
+				    	<td><textarea rows="7" cols="100" required
 				    		name="content" placeholder="글내용"></textarea></td>
 				    </tr>
+				    <tr>
+						<td><input type="file" name="filename"></td>
+					</tr>
 				    <tr>
 				    	<td>
 				    		<button type="submit">등록</button>

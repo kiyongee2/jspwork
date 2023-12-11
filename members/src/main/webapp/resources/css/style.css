@@ -68,14 +68,16 @@ table th, td{padding: 10px;}
 
 /* 게시글 목록 스타일 */
 #boardlist{width: 700px; margin: 20px auto;}
+#boardlist .searchform{text-align: right; margin-top: 16px;}
+.searchform .field, .kw{padding: 10px;}
 #boardlist table{width: 700px; margin: 20px auto;}
 #boardlist table, th, td{border: 1px solid #ccc; 
   border-collapse: collapse; text-align: center;}
-table th, td{padding: 10px;}
+table th, td{padding: 8px;}
 table thead{background: #eee;}
 #boardlist button{padding: 10px;}
 #boardlist .pagination{text-align: center;}
-.pagination a{margin: 5px;}
+.pagination a{margin: 5px; color: black;}
 
 /* 글쓰기 스타일*/
 #writeform{width: 550px; margin: 20px auto;}

@@ -15,12 +15,12 @@
       <section id="boardlist">
 		<h2>게시글 목록</h2>
 		<!-- 검색 영역 -->
-		<form action="" method="get">
-			<select name="field">
+		<form action="" method="get" class="searchform">
+			<select name="field" class="field">
 				<option value="title" ${(field eq "title") ? "selected" : ""}>제목</option>
 				<option value="id" ${(field eq "id") ? "selected" : ""}>작성자</option>
 			</select>
-			<input type="text" name="kw" value="${kw}">
+			<input type="text" name="kw" value="${kw}" class="kw">
 			<button type="submit">검색</button>
 		</form>
 		<!-- 글 목록 -->

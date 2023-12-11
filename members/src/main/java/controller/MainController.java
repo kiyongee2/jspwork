@@ -1,7 +1,9 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import board.Board;
 import board.BoardDAO;
@@ -100,6 +105,9 @@ public class MainController extends HttpServlet {
 			m.setGender(gender);
 			//db에 저장함
 			mDAO.insertMember(m);
+			//회원가입후 자동 로그인
+			session.setAttribute("sessionId", m.getId()); //아이디를 가져와서 sessionId(세션이름) 발급
+			session.setAttribute("sessionName", m.getName()); //성명을 가져와서 sessionName(세션이름) 발급
 			//회원 가입후 이동
 			nextPage = "/index.jsp";
 		}else if(command.equals("/memberview.do")) {
@@ -121,10 +129,13 @@ public class MainController extends HttpServlet {
 			Member m = new Member();
 			m.setId(id);
 			m.setPasswd(passwd);
+			
 			//로그인 인증
-			boolean result = mDAO.checkLogin(m);
-			if(result) { //result가 true이면 세션 발급
-				session.setAttribute("sessionId", id);
+			Member member = mDAO.checkLogin(m);
+			String name = member.getName();
+			if(name != null) { //result가 true이면 세션 발급
+				session.setAttribute("sessionId", id);  //아이디 세션발급
+				session.setAttribute("sessionName", name); //이름 세션 발급
 				//로그인 후 페이지 이동
 				nextPage = "/index.jsp";
 			}else {
@@ -206,16 +217,37 @@ public class MainController extends HttpServlet {
 		}else if(command.equals("/writeform.do")) {
 			nextPage = "/board/writeform.jsp";
 		}else if(command.equals("/write.do")) {
-			//폼 데이터 받기
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
+			
+			String realFolder = "C:\\jspworks\\members\\src\\main\\webapp\\upload";
+			int maxSize = 10*1024*1024;  //10MB
+			String encType = "utf-8";    //파일이름 한글 인코딩
+			DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();
+			
+			//5가지 인자
+			MultipartRequest multi = new MultipartRequest(request, realFolder, 
+								maxSize, encType, policy); 
+			
+			//폼 일반 속성 데이터 받기
+			String title = multi.getParameter("title");
+			String content = multi.getParameter("content");
 			//세션 가져오기
 			String id = (String)session.getAttribute("sessionId");
+			
+			//file 파라미터 추출
+			Enumeration<?> files = multi.getFileNames();
+			String filename = "";
+			while(files.hasMoreElements()) { //파일이름이 있는 동안 반복
+				String userFilename = (String)files.nextElement(); 
+				
+				//실제 저장될 이름
+				filename = multi.getFilesystemName(userFilename);
+			}
 			
 			//db에 저장
 			Board b = new Board();
 			b.setTitle(title);
 			b.setContent(content);
+			b.setFilename(filename);
 			b.setId(id);
 			//write 메서드 실행
 			bDAO.write(b);
