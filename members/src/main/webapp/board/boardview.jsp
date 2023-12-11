@@ -10,6 +10,13 @@
 <link rel="stylesheet" href="../resources/css/style.css">
 </head>
 <body>
+    <!-- 로그인한 사용자만 글쓰기 허용됨 -->
+	<c:if test="${empty sessionId}">
+		<script type="text/javascript">
+			alert("로그인이 필요합니다.");
+			location.href = "/loginform.do";
+		</script>
+	</c:if>
 	<jsp:include page="../header.jsp" />
     <div id="container">
       <section id="board_view">
@@ -25,7 +32,38 @@
 			    			name="content" readonly>${board.content}</textarea></td>
 			    </tr>
 			    <tr>
+					<td>
+						<c:out value="글쓴이: ${board.id}"/>
+          					<c:choose>
+          						<c:when test="${not empty board.modifyDate}">
+          						  (수정일: <fmt:formatDate value="${board.modifyDate}" 
+          						  				pattern="yyyy-MM-dd HH:mm:ss"/>)
+          				    	</c:when>
+	           				    <c:otherwise>
+	           				   	  (작성일: <fmt:formatDate value="${board.createDate}" 
+	           				   	  				pattern="yyyy-MM-dd HH:mm:ss"/>)
+	           				   </c:otherwise>
+          				   </c:choose>
+          				</td>
+				</tr>
+			    <tr>
 			    	<td>
+			    	<c:choose>
+			    		<c:when test="${not empty board.filename}">
+			    			파일: ${board.filename}<a href="filedown.do?filename=${board.filename}">
+			    						&nbsp;[다운로드]</a> 
+			    		</c:when>
+			    		<c:otherwise>
+			    			<c:out value="첨부파일: " />
+			    		</c:otherwise>
+			    	</c:choose>
+			    	</td>
+			    </tr>
+			    <tr>
+					<td>조회수: ${board.hit}</td>
+				</tr>
+			    <tr>
+			    	<td class="file">
 			    	    <c:if test="${sessionId eq board.id}">
 			    		<a href="/updateBoardform.do?bno=${board.bno}">
 			    			<button type="button">수정</button>
