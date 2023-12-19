@@ -260,10 +260,21 @@ public class MainController extends HttpServlet {
 			int bno =  Integer.parseInt(request.getParameter("bno"));
 			//글 상세보기 처리
 			Board board = bDAO.getBoard(bno);
+			//세션 아이디 가져옴
+			String id = (String)session.getAttribute("sessionId");
 			
 			//좋아요 개수 - 해당 게시글의 개수를 출력
 			int voteCount = vDAO.voteCount(bno);
 			System.out.println("좋아요 수: " + voteCount);
+			
+			//하트의 상태 바꾸기(토글 방식)
+			boolean sw = false;
+			int result = vDAO.checkVoter(bno, id);  //게시글번호, 세션아이디
+			if(result == 0) {
+				sw = true;
+			}else {
+				sw = false;
+			}
 			
 			//댓글 목록 보기
 			List<Reply> replyList = rDAO.getReplyList(bno);
@@ -272,6 +283,7 @@ public class MainController extends HttpServlet {
 			request.setAttribute("board", board);
 			request.setAttribute("replyList", replyList);  //댓글 목록
 			request.setAttribute("voteCount", voteCount); //좋아요 수
+			request.setAttribute("sw", sw);  //상태 보냄
 			
 			nextPage = "/board/boardview.jsp";
 		}else if(command.equals("/deleteboard.do")) {
@@ -315,10 +327,11 @@ public class MainController extends HttpServlet {
 		   
 		   //좋아요 저장 유무 체크
 		   int result = vDAO.checkVoter(bno, id);
-		   
-		   vDAO.insertVote(voter);
-		   
-		   //좋아요 삭제
+		   if(result == 0) {  //db에 없으면(저장 안됨)
+			   vDAO.insertVote(voter);  //좋아요 추가 
+		   }else { //result == 1
+			   vDAO.deleteVote(voter);  //좋아요 삭제
+		   }
 		}
 		
 		//댓글 구현

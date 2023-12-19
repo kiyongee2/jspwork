@@ -71,8 +71,25 @@ public class VoterDAO {
 		}
 		return 0;  //일치하지 않으면 0 반환
 	}
-	
+
 	//좋아요 삭제
+	public void deleteVote(Voter voter) {
+		try {
+			conn = JDBCUtil.getConnection();
+			String sql = "DELETE FROM voter WHERE bno=? AND mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, voter.getBno());
+			pstmt.setString(2, voter.getMid());
+			//sql 실행
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt);
+		}
+	}
+	
+	
 	
 	
 	

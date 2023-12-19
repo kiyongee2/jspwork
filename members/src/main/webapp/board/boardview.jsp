@@ -69,12 +69,25 @@
 							    <a href="#" onclick="location.href='/loginform.do' ">(좋아요는 로그인이 필요합니다.)</a>
 							</c:when>
 							<c:otherwise>
-								<span>
-								  <a href="/like.do?bno=${board.bno}&id=${sessionId}">
-								  	<i class="fa-solid fa-heart" style="color: #f00"></i>
-								  </a>
-								 </span>
-							    <span>${voteCount}</span>	
+							    <!-- 하트의 상태 바꾸기 -->
+								<c:choose>
+									<c:when test="${sw eq true}">
+									  <span>
+										  <a href="/like.do?bno=${board.bno}&id=${sessionId}">
+										  	<i class="fa-regular fa-heart" style="color: #f00"></i>
+										  </a>
+									  </span>
+							    	  <span>${voteCount}</span>	
+									</c:when>
+									<c:otherwise>
+									   <span>
+										  <a href="/like.do?bno=${board.bno}&id=${sessionId}">
+										  	<i class="fa-solid fa-heart" style="color: #f00"></i>
+										  </a>
+									   </span>
+									   <span>${voteCount}</span>
+									</c:otherwise>
+								</c:choose>
 							</c:otherwise>
 						</c:choose>
 					</td>
