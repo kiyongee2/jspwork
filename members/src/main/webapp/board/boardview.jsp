@@ -10,13 +10,6 @@
 <link rel="stylesheet" href="../resources/css/style.css">
 </head>
 <body>
-    <!-- 로그인한 사용자만 글쓰기 허용됨 -->
-	<c:if test="${empty sessionId}">
-		<script type="text/javascript">
-			alert("로그인이 필요합니다.");
-			location.href = "/loginform.do";
-		</script>
-	</c:if>
 	<jsp:include page="../header.jsp" />
     <div id="container">
       <section id="board_view">
@@ -28,8 +21,14 @@
 							value="${board.title}" readonly></td>
 				</tr>
 			    <tr>
-			    	<td><textarea rows="7" cols="100" 
-			    			name="content" readonly>${board.content}</textarea></td>
+			    	<td>
+			    	    <div>
+				    	    <c:if test="${not empty board.filename}">
+				    	    	<img src="../upload/${board.filename}" alt="">
+				    	    </c:if>
+			    	    </div>
+			    			${board.content}
+			    	</td>
 			    </tr>
 			    <tr>
 					<td>
@@ -60,7 +59,25 @@
 			    	</td>
 			    </tr>
 			    <tr>
-					<td>조회수: ${board.hit}</td>
+					<td>
+						조회수: ${board.hit}&nbsp;&nbsp;&nbsp;&nbsp;
+						<!-- 좋아요 영역 -->
+						<c:choose>
+							<c:when test="${empty sessionId}">
+								<span><i class="fa-solid fa-heart" style="color: #000"></i></span>
+							    <span>${voteCount}</span>
+							    <a href="#" onclick="location.href='/loginform.do' ">(좋아요는 로그인이 필요합니다.)</a>
+							</c:when>
+							<c:otherwise>
+								<span>
+								  <a href="/like.do?bno=${board.bno}&id=${sessionId}">
+								  	<i class="fa-solid fa-heart" style="color: #f00"></i>
+								  </a>
+								 </span>
+							    <span>${voteCount}</span>	
+							</c:otherwise>
+						</c:choose>
+					</td>
 				</tr>
 			    <tr>
 			    	<td class="file">

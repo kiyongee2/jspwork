@@ -23,6 +23,8 @@ import member.Member;
 import member.MemberDAO;
 import reply.Reply;
 import reply.ReplyDAO;
+import voter.Voter;
+import voter.VoterDAO;
 
 @WebServlet("*.do") // '/'이하의 경로에서 do로 끝나는 확장자는 모두 허용
 public class MainController extends HttpServlet {
@@ -32,11 +34,13 @@ public class MainController extends HttpServlet {
 	MemberDAO mDAO;
 	BoardDAO bDAO;
 	ReplyDAO rDAO;
+	VoterDAO vDAO;
 	
     public MainController() { //생성자
         mDAO = new MemberDAO();
         bDAO = new BoardDAO();
         rDAO = new ReplyDAO();
+        vDAO = new VoterDAO();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -257,12 +261,17 @@ public class MainController extends HttpServlet {
 			//글 상세보기 처리
 			Board board = bDAO.getBoard(bno);
 			
+			//좋아요 개수 - 해당 게시글의 개수를 출력
+			int voteCount = vDAO.voteCount(bno);
+			System.out.println("좋아요 수: " + voteCount);
+			
 			//댓글 목록 보기
 			List<Reply> replyList = rDAO.getReplyList(bno);
 			
 			//모델 생성해서 뷰로 보내기
 			request.setAttribute("board", board);
-			request.setAttribute("replyList", replyList);
+			request.setAttribute("replyList", replyList);  //댓글 목록
+			request.setAttribute("voteCount", voteCount); //좋아요 수
 			
 			nextPage = "/board/boardview.jsp";
 		}else if(command.equals("/deleteboard.do")) {
@@ -295,6 +304,21 @@ public class MainController extends HttpServlet {
 			bDAO.updateboard(b);
 			
 			//nextPage = "/boardlist.do";
+		}else if(command.equals("/like.do")) {
+		   int bno = Integer.parseInt(request.getParameter("bno"));
+		   String id = request.getParameter("id");
+		   
+		   //좋아요 추가(insert)
+		   Voter voter = new Voter();
+		   voter.setBno(bno);
+		   voter.setMid(id);
+		   
+		   //좋아요 저장 유무 체크
+		   int result = vDAO.checkVoter(bno, id);
+		   
+		   vDAO.insertVote(voter);
+		   
+		   //좋아요 삭제
 		}
 		
 		//댓글 구현
@@ -321,7 +345,8 @@ public class MainController extends HttpServlet {
 		//새로고침하면 게시글, 댓글 중복 생성 문제 해결
 		if(command.equals("/write.do") || command.equals("/updateboard.do")) {
 			response.sendRedirect("/boardlist.do");
-		}else if(command.equals("/insertreply.do") || command.equals("/deletereply.do")) {
+		}else if(command.equals("/insertreply.do") || command.equals("/deletereply.do")
+				|| command.equals("/like.do")) {
 			int bno =  Integer.parseInt(request.getParameter("bno"));
 			response.sendRedirect("/boardview.do?bno=" + bno);
 		}else {
