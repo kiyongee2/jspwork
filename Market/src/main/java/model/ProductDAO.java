@@ -76,4 +76,38 @@ public class ProductDAO {
 			JDBCUtil.close(conn, pstmt);
 		}
 	}
+
+	//상품 정보
+	public Product getProduct(String pid) {
+		Product p = new Product();
+		try {
+			//db 연결
+			conn = JDBCUtil.getConnection();
+			//sql 처리
+			String sql = "select * from product where p_id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pid);
+			//sql 검색 처리
+			rs = pstmt.executeQuery();
+			//레코드 추출
+			if(rs.next()) { //1건이 있다면
+				p.setPno(rs.getInt("p_no"));
+				p.setPid(rs.getString("p_id"));
+				p.setPname(rs.getString("p_name"));
+				p.setPrice(rs.getInt("p_price"));
+				p.setDescription(rs.getString("p_description"));
+				p.setCategory(rs.getString("p_category"));
+				p.setPstock(rs.getLong("p_stock"));
+				p.setCondition(rs.getString("p_condition"));
+				p.setPimage(rs.getString("p_image"));
+				p.setRegDate(rs.getTimestamp("regdate"));
+				p.setUpdateDate(rs.getTimestamp("updatedate"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally { //db 종료
+			JDBCUtil.close(conn, pstmt, rs);
+		}
+		return p;
+	}
 }
