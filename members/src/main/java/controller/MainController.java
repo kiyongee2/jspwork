@@ -270,7 +270,7 @@ public class MainController extends HttpServlet {
 			//하트의 상태 바꾸기(토글 방식)
 			boolean sw = false;
 			int result = vDAO.checkVoter(bno, id);  //게시글번호, 세션아이디
-			if(result == 0) {
+			if(result == 0) { //저장 안된 상태
 				sw = true;
 			}else {
 				sw = false;
@@ -303,19 +303,42 @@ public class MainController extends HttpServlet {
 			nextPage = "/board/updateBoardform.jsp";
 		}else if(command.equals("/updateboard.do")) {
 			//게시글 제목, 내용을 파라미터로 받음
-			int bno =  Integer.parseInt(request.getParameter("bno"));
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
+			String realFolder = "C:\\jspworks\\members\\src\\main\\webapp\\upload";
+			int maxSize = 10*1024*1024;  //10MB
+			String encType = "utf-8";    //파일이름 한글 인코딩
+			DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();
 			
-			//수정 처리 메서드
+			//5가지 인자
+			MultipartRequest multi = new MultipartRequest(request, realFolder, 
+								maxSize, encType, policy); 
+			
+			//폼 일반 속성 데이터 받기
+			int bno = Integer.parseInt(multi.getParameter("bno"));
+			String title = multi.getParameter("title");
+			String content = multi.getParameter("content");
+			
+			//file 파라미터 추출
+			Enumeration<?> files = multi.getFileNames();
+			String filename = "";
+			while(files.hasMoreElements()) { //파일이름이 있는 동안 반복
+				String userFilename = (String)files.nextElement(); 
+				
+				//실제 저장될 이름
+				filename = multi.getFilesystemName(userFilename);
+			}
+			//db에 저장
 			Board b = new Board();
 			b.setTitle(title);
 			b.setContent(content);
+			b.setFilename(filename);
 			b.setBno(bno);
 			
-			bDAO.updateboard(b);
-			
-			//nextPage = "/boardlist.do";
+			//파일 유무에 따른 처리
+			if(filename != null) { //파일이 있는 경우
+				bDAO.updateboard(b);
+			}else { //파일이 없는 경우
+				bDAO.updateboardNoFile(b);
+			}
 		}else if(command.equals("/like.do")) {
 		   int bno = Integer.parseInt(request.getParameter("bno"));
 		   String id = request.getParameter("id");

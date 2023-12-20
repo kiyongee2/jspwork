@@ -27,7 +27,7 @@
 				    	    	<img src="../upload/${board.filename}" alt="">
 				    	    </c:if>
 			    	    </div>
-			    			${board.content}
+			    		${board.content}
 			    	</td>
 			    </tr>
 			    <tr>
