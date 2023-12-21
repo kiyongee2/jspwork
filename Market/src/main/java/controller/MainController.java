@@ -101,10 +101,15 @@ public class MainController extends HttpServlet {
 			request.setAttribute("product", product);
 			nextPage = "/product/pinfo.jsp";
 		}
-		//페이지 이동
-		RequestDispatcher dispatch =
-				request.getRequestDispatcher(nextPage);
-		dispatch.forward(request, response);
+		
+		//페이지 이동(포워드), 리다이렉트
+		if(command.equals("/insertproduct.do")) {
+			response.sendRedirect("/productlist.do");
+		}else {
+			RequestDispatcher dispatch =
+					request.getRequestDispatcher(nextPage);
+			dispatch.forward(request, response);
+		}
 	}
 
 }
