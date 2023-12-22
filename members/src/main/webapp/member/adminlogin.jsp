@@ -26,6 +26,9 @@
 		    		</li>
 		    	</ul>
 		    </fieldset>
+		    <div class="button">
+		    	<button type="submit">로그인</button>
+		    </div>
 		    <%
 		    	String error = request.getParameter("error");
 		        if(error != null){
@@ -34,9 +37,6 @@
 		        	out.println("</div>");
 		        }
 		    %>
-		    <div class="button">
-		    	<button type="submit">로그인</button>
-		    </div>
 		  </form>
 	  </section>
 	</div>

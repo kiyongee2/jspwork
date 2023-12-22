@@ -13,6 +13,7 @@
 		<h2>배송 정보</h2>
 		<div class="row">
 		<form action="/shippinginfo.do" method="post">
+		   <input type="hidden" name="cartId" value="${cartId}">
 			<div class="form-group row my-3">
 			  <label class="col-2">성명</label>
 			  <div class="col-3">
@@ -22,7 +23,8 @@
 			<div class="form-group row my-3">
 			  <label class="col-2">배송일</label>
 			  <div class="col-3">
-			  	<input type="text" name="shippingdate" class="form-control">
+			  	<input type="text" name="shippingdate" class="form-control"
+			  			placeholder="yyyy/mm/dd">
 			  </div>
 			</div>
 			<div class="form-group row my-3">
